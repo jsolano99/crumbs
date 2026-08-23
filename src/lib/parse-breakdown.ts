@@ -188,25 +188,6 @@ export function formatBreakdownShare(
   return `${formatEmailSubject(sections.title)}\n\n${withFooter}`;
 }
 
-function escapeHtml(value: string): string {
-  return value
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;");
-}
-
-/** HTML email body so card headers render bold in Mail. */
-export function formatBreakdownShareHtml(sections: Breakdown): string {
-  const sectionsHtml = shareSections(sections)
-    .map(({ header, items }) => {
-      const list = items.map((item) => `<li>${escapeHtml(item)}</li>`).join("");
-      return `<p><strong>${escapeHtml(header)}</strong></p><ul>${list}</ul>`;
-    })
-    .join("");
-  return `<div>${sectionsHtml}<p>${escapeHtml(SHARE_FOOTER)}</p></div>`;
-}
-
 export type TermEntry = {
   term: string;
   definition: string;

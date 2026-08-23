@@ -6,7 +6,6 @@ import {
   extractError,
   formatEmailSubject,
   formatBreakdownShare,
-  formatBreakdownShareHtml,
   learnMoreUrl,
   parseBreakdown,
   parseTerms,
@@ -14,48 +13,6 @@ import {
   type Breakdown,
 } from "@/lib/parse-breakdown";
 import { SwipeDeck, type DeckCard } from "./SwipeDeck";
-
-function openHtmlEmailDraft({
-  to,
-  subject,
-  html,
-  plain,
-}: {
-  to: string;
-  subject: string;
-  html: string;
-  plain: string;
-}) {
-  const eml = [
-    `To: ${to}`,
-    `Subject: ${subject}`,
-    "X-Unsent: 1",
-    "MIME-Version: 1.0",
-    'Content-Type: text/html; charset="UTF-8"',
-    "",
-    html,
-  ].join("\r\n");
-
-  try {
-    const blob = new Blob([eml], { type: "message/rfc822" });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement("a");
-    link.href = url;
-    link.download = "crumbs.eml";
-    document.body.append(link);
-    link.click();
-    link.remove();
-    window.setTimeout(() => URL.revokeObjectURL(url), 1000);
-  } catch {
-    const mailto = `mailto:${to}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(plain)}`;
-    if (mailto.length > 2000) {
-      void navigator.clipboard.writeText(plain).catch(() => undefined);
-      window.location.href = `mailto:${to}?subject=${encodeURIComponent(subject)}`;
-      return;
-    }
-    window.location.href = mailto;
-  }
-}
 
 type Phase = "night" | "first-light" | "dawn" | "day" | "blackout";
 type AuthMode = "signup" | "login";
@@ -193,7 +150,6 @@ export default function Home() {
   async function handleEmailMyself() {
     const body = formatBreakdownShare(sections);
     const shareText = formatBreakdownShare(sections, { includeSubject: true });
-    const html = formatBreakdownShareHtml(sections);
     const subject = formatEmailSubject(sections.title);
     if (!body) return;
 
@@ -210,7 +166,13 @@ export default function Home() {
     }
 
     const to = userEmail ?? "";
-    openHtmlEmailDraft({ to, subject, html, plain: body });
+    const mailto = `mailto:${to}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    if (mailto.length > 2000) {
+      await navigator.clipboard.writeText(body).catch(() => undefined);
+      window.location.href = `mailto:${to}?subject=${encodeURIComponent(subject)}`;
+      return;
+    }
+    window.location.href = mailto;
   }
 
   async function handleAuthSubmit(event: React.FormEvent) {
