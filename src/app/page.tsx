@@ -192,6 +192,7 @@ export default function Home() {
 
   async function handleEmailMyself() {
     const body = formatBreakdownShare(sections);
+    const shareText = formatBreakdownShare(sections, { includeSubject: true });
     const html = formatBreakdownShareHtml(sections);
     const subject = formatEmailSubject(sections.title);
     if (!body) return;
@@ -201,7 +202,7 @@ export default function Home() {
 
     if (prefersNativeShare) {
       try {
-        await navigator.share({ title: subject, text: body });
+        await navigator.share({ title: subject, text: shareText });
         return;
       } catch (err) {
         if (err instanceof DOMException && err.name === "AbortError") return;

@@ -112,16 +112,33 @@ function bulletsFromBody(body: string): string[] {
 }
 
 function formatShareBlock(header: string, items: string[]): string {
-  return [header, "", ...items.map((item) => `- ${item}`)].join("\n");
+  return [`[ ${header} ]`, "", ...items.map((item) => `- ${item}`)].join("\n");
 }
 
-const SHARE_FOOTER = "This email this breakdown was generated and sent by crumbs.";
+const SHARE_FOOTER = "This breakdown was generated and sent by crumbs.";
+
+/** True when the model wrote a "nothing here" stand-in instead of real content. */
+function isPlaceholderItem(item: string): boolean {
+  const text = item.trim().toLowerCase().replace(/[.!?…]+$/, "");
+  if (!text) return true;
+  if (/^(none|n\/a|nil|nothing)$/.test(text)) return true;
+  if (/^no terms?\b/.test(text)) return true;
+  if (/nothing (to |needs? )?(explain|implement|do|here)/.test(text)) return true;
+  if (/(need|needs) (no )?explanation/.test(text)) return true;
+  if (/no (jargon|terms) (need|to|here)/.test(text)) return true;
+  return false;
+}
+
+function usableItems(items: string[]): string[] {
+  return items.filter((item) => !isPlaceholderItem(item));
+}
 
 function shareSections(sections: Breakdown): { header: string; items: string[] }[] {
   const blocks: { header: string; items: string[] }[] = [];
 
   if (sections.core) {
-    blocks.push({ header: "Core idea", items: bulletsFromBody(sections.core) });
+    const items = usableItems(bulletsFromBody(sections.core));
+    if (items.length > 0) blocks.push({ header: "Core idea", items });
   }
 
   if (sections.terms) {
@@ -132,15 +149,16 @@ function shareSections(sections: Breakdown): { header: string; items: string[] }
         .filter(Boolean)
         .join("\n")
     );
-    const items = terms.length
+    const rawItems = terms.length
       ? terms.map((entry) => `${entry.term} — ${entry.definition}`)
       : bulletsFromBody(sections.terms);
-    const usable = items.filter((item) => !/^(none|n\/a|nothing\.?)$/i.test(item.trim()));
-    if (usable.length > 0) blocks.push({ header: "Terms explained", items: usable });
+    const items = usableItems(rawItems);
+    if (items.length > 0) blocks.push({ header: "Terms explained", items });
   }
 
   if (sections.steps) {
-    blocks.push({ header: "How to implement it", items: bulletsFromBody(sections.steps) });
+    const items = usableItems(bulletsFromBody(sections.steps));
+    if (items.length > 0) blocks.push({ header: "How to implement it", items });
   }
 
   return blocks;
@@ -154,12 +172,20 @@ export function formatEmailSubject(title?: string): string {
 /**
  * Plaintext for mailto / native share: each card title as a header,
  * with the card's points as bullets underneath, then a Crumbs footer.
+ * Pass `includeSubject` on the share-sheet path so iMessage gets the
+ * same "re: … by crumbs" line the email subject uses — iOS does not
+ * put `navigator.share`'s title into the message body.
  */
-export function formatBreakdownShare(sections: Breakdown): string {
+export function formatBreakdownShare(
+  sections: Breakdown,
+  options?: { includeSubject?: boolean }
+): string {
   const body = shareSections(sections)
     .map(({ header, items }) => formatShareBlock(header, items))
     .join("\n\n");
-  return body ? `${body}\n\n${SHARE_FOOTER}` : SHARE_FOOTER;
+  const withFooter = body ? `${body}\n\n${SHARE_FOOTER}` : SHARE_FOOTER;
+  if (!options?.includeSubject) return withFooter;
+  return `${formatEmailSubject(sections.title)}\n\n${withFooter}`;
 }
 
 function escapeHtml(value: string): string {
