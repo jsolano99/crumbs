@@ -166,14 +166,14 @@ function shareSections(sections: Breakdown): { header: string; items: string[] }
 
 export function formatEmailSubject(title?: string): string {
   const topic = title?.trim() || "this lesson";
-  return `re: ${topic} by crumbs`;
+  return `re: ${topic}`;
 }
 
 /**
  * Plaintext for mailto / native share: each card title as a header,
  * with the card's points as bullets underneath, then a Crumbs footer.
  * Pass `includeSubject` on the share-sheet path so iMessage gets the
- * same "re: … by crumbs" line the email subject uses — iOS does not
+ * same "re: …" line the email subject uses — iOS does not
  * put `navigator.share`'s title into the message body.
  */
 export function formatBreakdownShare(
