@@ -1,0 +1,126 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-08-21T16:53:46Z",
+  "title": "Design System: Crumbs",
+  "extensions": {
+    "colorMeta": {
+      "night": { "role": "neutral", "displayName": "Night", "canonical": "oklch(16.4% 0.028 276.3)", "tonalRamp": ["#080a17", "#212433", "#3e4151", "#5d6071", "#7e8193", "#a0a4b7", "#c4c8dc", "#e9edff"] },
+      "night-deep": { "role": "neutral", "displayName": "Night Deep", "canonical": "oklch(13.3% 0.021 277.1)", "tonalRamp": ["#090a14", "#22242f", "#3f414d", "#5e606d", "#7f818f", "#a1a4b2", "#c5c8d7", "#ebeefd"] },
+      "cobalt": { "role": "secondary", "displayName": "Cobalt", "canonical": "oklch(42.8% 0.117 265.0)", "tonalRamp": ["#01003b", "#081c5d", "#223d7f", "#405ea3", "#6080c9", "#81a3ef", "#a4c8ff", "#c8eeff"] },
+      "cobalt-glow": { "role": "secondary", "displayName": "Cobalt Glow", "canonical": "oklch(54.8% 0.144 266.4)", "tonalRamp": ["#050046", "#071569", "#1f388d", "#3b5ab2", "#5a7dd8", "#7ba1ff", "#9ec6ff", "#c2ecff"] },
+      "rose": { "role": "tertiary", "displayName": "Rose", "canonical": "oklch(71.7% 0.097 12.4)", "tonalRamp": ["#270002", "#490618", "#6c2834", "#904852", "#b46972", "#da8b94", "#ffafb8", "#ffd4dd"] },
+      "rose-ink": { "role": "tertiary", "displayName": "Rose Ink", "canonical": "oklch(52.3% 0.115 10.3)", "tonalRamp": ["#2b0002", "#4e0018", "#722033", "#964152", "#bc6372", "#e38694", "#ffa9b8", "#ffcedc"] },
+      "day": { "role": "neutral", "displayName": "Day", "canonical": "oklch(98.9% 0.006 84.6)", "tonalRamp": ["#0c0b09", "#262522", "#43423f", "#63615e", "#84827e", "#a7a5a1", "#cbc9c5", "#f0eeea"] },
+      "paper": { "role": "neutral", "displayName": "Paper", "canonical": "oklch(100.0% 0.000 89.9)", "tonalRamp": ["#0b0b0b", "#252525", "#424242", "#616161", "#828282", "#a5a5a5", "#c9c9c9", "#eeeeee"] },
+      "ink": { "role": "neutral", "displayName": "Ink", "canonical": "oklch(19.7% 0.010 276.5)", "tonalRamp": ["#0a0b0f", "#24252a", "#404248", "#5f6167", "#808289", "#a3a5ac", "#c7c9d0", "#eceef5"] },
+      "ink-soft": { "role": "neutral", "displayName": "Ink Soft", "canonical": "oklch(41.9% 0.020 278.0)", "tonalRamp": ["#090a14", "#23242f", "#3f414d", "#5e606d", "#7f818f", "#a2a4b2", "#c6c8d6", "#ebeefc"] },
+      "ember": { "role": "primary", "displayName": "Ember", "canonical": "oklch(77.9% 0.146 71.9)", "tonalRamp": ["#2a0000", "#4c0800", "#6e2d00", "#924e00", "#b77000", "#dc9421", "#ffb850", "#ffde78"] },
+      "ember-bright": { "role": "primary", "displayName": "Ember Bright", "canonical": "oklch(85.2% 0.129 75.5)", "tonalRamp": ["#260000", "#461200", "#673300", "#8a5400", "#ae7500", "#d3983a", "#fabd62", "#ffe287"] },
+      "ember-ink": { "role": "primary", "displayName": "Ember Ink", "canonical": "oklch(50.9% 0.096 67.6)", "tonalRamp": ["#220000", "#421700", "#633500", "#855519", "#a9773e", "#cd9961", "#f3bd84", "#ffe3a8"] },
+      "error": { "role": "neutral", "displayName": "Blackout Error", "canonical": "oklch(54.3% 0.174 29.7)", "tonalRamp": ["#3a0000", "#600000", "#870000", "#ae261a", "#d64e3e", "#ff7461", "#ff9984", "#ffbea8"] },
+      "error-bright": { "role": "neutral", "displayName": "Blackout Error Bright", "canonical": "oklch(75.8% 0.145 29.0)", "tonalRamp": ["#330000", "#580000", "#7d0e09", "#a3372d", "#ca5b4d", "#f27e6f", "#ffa392", "#ffc8b6"] },
+      "error-text": { "role": "neutral", "displayName": "Blackout Error Text", "canonical": "oklch(83.5% 0.091 29.9)", "tonalRamp": ["#260000", "#480b06", "#6a2c23", "#8e4c41", "#b26d61", "#d88f83", "#ffb3a6", "#ffd8ca"] },
+      "mist": { "role": "neutral", "displayName": "Mist", "canonical": "rgba(255, 255, 255, 0.08)", "tonalRamp": [] },
+      "hairline": { "role": "neutral", "displayName": "Hairline", "canonical": "rgba(255, 255, 255, 0.12)", "tonalRamp": [] }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Display", "purpose": "The \"Crumbs\" wordmark only; nowhere else." },
+      "body": { "displayName": "Body", "purpose": "Tagline, textarea input, band body copy, and button labels — everything a person reads." },
+      "label": { "displayName": "Label / Cue", "purpose": "Uppercase, tracked-caps stage signage: the state-cue pill and each band's eyebrow dot-label. Never carries a full sentence." }
+    },
+    "shadows": [
+      { "name": "band-lift", "value": "0 20px 40px -28px rgba(6, 7, 16, 0.55)", "purpose": "The only at-rest shadow in the system; lifts each breakdown band card off the stage." },
+      { "name": "ember-glow", "value": "0 8px 24px -8px rgba(240, 166, 59, 0.65)", "purpose": "Hover-only glow under the primary submit button, colored to the ember accent." }
+    ],
+    "motion": [
+      { "name": "crossfade-atmosphere", "value": "opacity 1.3s cubic-bezier(0.19, 1, 0.22, 1)", "purpose": "Shared transition for night/first-light/dawn/day backdrop layers, and for text/surface recoloring bound to phase change." },
+      { "name": "cut-blackout", "value": "opacity 0.15s linear", "purpose": "Deliberately abrupt override used only by the blackout layer, to register failure as a break in the world's own rhythm." },
+      { "name": "raise-card", "value": "0.7s cubic-bezier(0.19, 1, 0.22, 1)", "purpose": "Band card entrance (opacity + translateY(14px→0)), staggered 0.08s per card in Core/Terms/Steps order." },
+      { "name": "control-feedback", "value": "0.15s–0.3s ease", "purpose": "Fast tier for button/input micro-interactions (transform, box-shadow, opacity) — deliberately snappier than the atmosphere-level transitions." }
+    ],
+    "breakpoints": [
+      { "name": "sm", "value": "30rem" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "The submit control. Ember gradient fill, the only button that ever changes label text (Break it down / Sending… / Reading… / Try again).",
+      "html": "<button class=\"ds-btn-primary\">Break it down</button>",
+      "css": ".ds-btn-primary { appearance: none; border: none; border-radius: 999px; padding: 0.85rem 2.1rem; font-family: var(--font-archivo, Archivo, system-ui, sans-serif); font-weight: 700; font-size: 0.95rem; letter-spacing: 0.01em; color: var(--crumbs-night-deep, #060710); background: linear-gradient(180deg, var(--crumbs-ember-bright, #ffc267), var(--crumbs-ember, #f0a63b)); cursor: pointer; transition: transform 0.15s ease, box-shadow 0.3s ease, opacity 0.3s ease; } .ds-btn-primary:hover { transform: translateY(-1px); box-shadow: 0 8px 24px -8px rgba(240, 166, 59, 0.65); } .ds-btn-primary:active { transform: translateY(0); } .ds-btn-primary:focus-visible { outline: 2px solid var(--crumbs-day, #fdfbf7); outline-offset: 3px; } .ds-btn-primary:disabled { opacity: 0.55; cursor: progress; }"
+    },
+    {
+      "name": "Ghost Button",
+      "kind": "button",
+      "refersTo": "button-ghost",
+      "description": "The reset control (\"Paste another tweet\"). Transparent at every state; only the border and text brighten on hover.",
+      "html": "<button class=\"ds-btn-ghost\">Paste another tweet</button>",
+      "css": ".ds-btn-ghost { appearance: none; border: 1px solid rgba(253, 251, 247, 0.3); background: transparent; color: rgba(253, 251, 247, 0.78); border-radius: 999px; padding: 0.6rem 1.3rem; font-family: var(--font-archivo, Archivo, system-ui, sans-serif); font-size: 0.85rem; cursor: pointer; transition: border-color 0.2s ease, color 0.2s ease; } .ds-btn-ghost:hover { border-color: rgba(253, 251, 247, 0.6); color: var(--crumbs-day, #fdfbf7); } .ds-btn-ghost:focus-visible { outline: 2px solid var(--crumbs-ember, #f0a63b); outline-offset: 2px; }"
+    },
+    {
+      "name": "Breakdown Band Card",
+      "kind": "card",
+      "refersTo": "card-band",
+      "description": "One of three stacked result cards (Core idea / Terms explained / How to implement it), each with a colored eyebrow dot-label tied to its section.",
+      "html": "<article class=\"ds-card-band\"><p class=\"ds-card-band-label ds-band-core\"><span class=\"ds-dot\"></span>Core idea</p><p class=\"ds-card-band-body\">A plain-language read of what the tweet is actually saying, without the jargon.</p></article>",
+      "css": ".ds-card-band { background: var(--crumbs-paper, #ffffff); color: var(--crumbs-ink, #14151a); border-radius: 1rem; padding: 1.5rem; box-shadow: 0 20px 40px -28px rgba(6, 7, 16, 0.55); text-align: left; } .ds-card-band-label { font-family: var(--font-stencil, 'Allerta Stencil', sans-serif); font-size: 0.68rem; letter-spacing: 0.2em; text-transform: uppercase; display: inline-flex; align-items: center; gap: 0.5em; margin-bottom: 0.75rem; } .ds-band-core { color: var(--crumbs-cobalt, #2f4b8f); } .ds-dot { width: 0.55em; height: 0.55em; border-radius: 999px; background: currentColor; } .ds-card-band-body { max-width: 58ch; line-height: 1.6; font-size: 1rem; font-family: var(--font-archivo, Archivo, system-ui, sans-serif); }"
+    },
+    {
+      "name": "Textarea Input",
+      "kind": "input",
+      "refersTo": "input-textarea",
+      "description": "The tweet-paste field. Translucent glass over the dark stage; solid paper once day arrives.",
+      "html": "<textarea class=\"ds-textarea\" placeholder=\"Paste the tweet text here…\"></textarea>",
+      "css": ".ds-textarea { width: 100%; min-height: 8.5rem; resize: vertical; padding: 1rem; border-radius: 0.85rem; border: 1px solid var(--crumbs-hairline, rgba(255,255,255,0.12)); background: var(--crumbs-mist, rgba(255,255,255,0.08)); backdrop-filter: blur(6px); color: var(--crumbs-day, #fdfbf7); font-family: var(--font-archivo, Archivo, system-ui, sans-serif); font-size: 1rem; line-height: 1.5; } .ds-textarea::placeholder { color: rgba(253, 251, 247, 0.55); } .ds-textarea:focus-visible { outline: 2px solid var(--crumbs-ember, #f0a63b); outline-offset: 2px; }"
+    },
+    {
+      "name": "State Cue Pill",
+      "kind": "chip",
+      "refersTo": "label-cue",
+      "description": "The always-visible, fixed-position status pill that names the current stage phase in words (e.g. \"Dawn — reading it\"). The one piece of chrome that never disappears.",
+      "html": "<div class=\"ds-cue\"><span class=\"ds-cue-dot\"></span>Dawn — reading it</div>",
+      "css": ".ds-cue { display: inline-flex; align-items: center; gap: 0.6em; padding: 0.4rem 0.75rem 0.4rem 0.6rem; border-radius: 999px; border: 1px solid var(--crumbs-hairline, rgba(255,255,255,0.12)); background: rgba(6, 7, 16, 0.35); backdrop-filter: blur(8px); font-family: var(--font-stencil, 'Allerta Stencil', sans-serif); font-size: 0.66rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--crumbs-ember-bright, #ffc267); } .ds-cue-dot { width: 0.5em; height: 0.5em; border-radius: 999px; background: currentColor; box-shadow: 0 0 0.5em currentColor; }"
+    },
+    {
+      "name": "Stage Backdrop Strip",
+      "kind": "custom",
+      "refersTo": null,
+      "description": "The five phase gradients (night, first-light, dawn, day, blackout) shown side by side as swatches. In the real app these are full-bleed, stacked, and crossfaded by opacity rather than shown side by side — this strip is a reference view of the sequence, not the live mechanism.",
+      "html": "<div class=\"ds-stage-strip\"><div class=\"ds-stage-swatch ds-stage-night\"><span>Night</span></div><div class=\"ds-stage-swatch ds-stage-first-light\"><span>First light</span></div><div class=\"ds-stage-swatch ds-stage-dawn\"><span>Dawn</span></div><div class=\"ds-stage-swatch ds-stage-day\"><span>Day</span></div><div class=\"ds-stage-swatch ds-stage-blackout\"><span>Blackout</span></div></div>",
+      "css": ".ds-stage-strip { display: flex; gap: 4px; height: 96px; width: 100%; } .ds-stage-swatch { flex: 1; border-radius: 0.5rem; display: flex; align-items: flex-end; padding: 0.5rem; overflow: hidden; } .ds-stage-swatch span { font-family: var(--font-stencil, 'Allerta Stencil', sans-serif); font-size: 0.58rem; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.85); } .ds-stage-night { background: linear-gradient(180deg, #060710 0%, #0b0d1a 100%); } .ds-stage-first-light { background: linear-gradient(180deg, #060710 0%, #0b0d1a 55%, #2f4b8f 140%); } .ds-stage-dawn { background: linear-gradient(180deg, #0b0d1a 0%, #2f4b8f 55%, #d98a93 130%); } .ds-stage-day { background: linear-gradient(180deg, #dce6f2 0%, #f3e3d8 38%, #fdfbf7 78%); } .ds-stage-day span { color: rgba(20,21,26,0.65); } .ds-stage-blackout { background: linear-gradient(180deg, #060710 0%, #1a0d0d 100%); }"
+    }
+  ],
+  "narrative": {
+    "northStar": "Dawn Cyclorama",
+    "overview": "Crumbs treats the act of a tweet becoming legible as literal stage light, not a chat-box card resolving a spinner. The entire viewport is a cyclorama — the curved backdrop behind a stage — that rises from night through first-light and dawn to day as the request actually moves through its lifecycle: idle, sent, streaming, complete. The transition is not decorative; it is bound to real fetch state (idle → first byte received → stream complete), so the light on stage always tells the truth about what the network is doing. A visitor pastes an opaque tweet onto a dark, near-empty stage, watches the light rise while Crumbs reads it, and receives the answer as three \"horizon-band\" cards — Core idea, Terms explained, How to implement it — that land on the now-lit stage like paper under daylight.\n\nThe system rejects the generic AI-assistant default (chat bubble, spinner, card-on-white). There is no chrome, no sidebar, no app shell — just the stage, the wordmark, the input, and the light. Depth comes from gradient and glow, never from applied drop shadows on the atmosphere itself. Typography splits cleanly in two: Allerta Stencil is stage signage — small, tracked-caps cue and label text, the kind of lettering that would sit on a physical cue card — and Archivo is everything a person actually reads. One ember accent marks every interactive control regardless of what hour the stage is showing, so the hand never loses the thing it's supposed to touch. An error is not a red toast; it's the lights cutting to black — \"blackout\" — fast and hard, the one moment this world intentionally breaks its own slow, eased rhythm.",
+    "keyCharacteristics": [
+      "Full-bleed atmosphere as the only \"background\" — five stacked gradient layers crossfade by phase, driven by real async state, not a timer.",
+      "Two-font split with a hard boundary: Allerta Stencil for cue/label text only, Archivo for everything else.",
+      "One accent (ember) that never changes hue across phases — it is the single constant in a screen that otherwise recolors itself continuously.",
+      "Pill-and-soft-round geometry throughout; no hard right angles.",
+      "A single named failure state (blackout) with its own fast, hard-cut motion, distinct from the slow crossfade every other phase shares."
+    ],
+    "rules": [
+      { "name": "The Ember Constant Rule", "body": "Every other color on screen belongs to a phase and changes when the phase changes. Ember does not. If a new control is added to any phase, it takes the ember accent, unchanged — it is the one thing a user can always find.", "section": "colors" },
+      { "name": "The Blackout Exception Rule", "body": "The error trio (error, error-bright, error-text) is off-limits outside the blackout phase. A red toast or inline validation error elsewhere in the product is not \"using the error color correctly\" — blackout is a whole-stage event, not a per-field state.", "section": "colors" },
+      { "name": "The Cue Voice Rule", "body": "Allerta Stencil is reserved for tracked-caps label/cue text under ~0.7rem. It never sets a headline, a button, or a sentence of body copy — the moment stencil would run past a few words, the world's own internal logic (this is signage, not prose) is being violated.", "section": "typography" },
+      { "name": "The No-Shadow-On-Light Rule", "body": "The backdrop, wordmark, and typography never take a drop shadow — depth for the \"world\" comes from the gradient's own light, not from applied elevation. Shadows are reserved for the two things that sit as physical objects on top of the stage: cards and the button's hover state.", "section": "elevation" }
+    ],
+    "dos": [
+      "Do drive every backdrop phase change off real request state (idle / sent / first byte / complete / errored) — never a fixed-duration timer or a scroll trigger.",
+      "Do keep the ember accent ({colors.ember} / {colors.ember-bright} / {colors.ember-ink}) constant across every phase; it is the one color a new control should never have to re-derive per phase.",
+      "Do give any new backdrop phase the shared 1.3s cubic-bezier(0.19, 1, 0.22, 1) crossfade unless it is, like blackout, an explicit failure/interrupt state.",
+      "Do keep Allerta Stencil scoped to uppercase, tracked-caps cue/label text under ~0.7rem; Archivo carries every sentence.",
+      "Do keep band-card and pill-button corners fully round or generously soft ({rounded.full} / {rounded.lg} / {rounded.md}) — no sharp corners anywhere in this world."
+    ],
+    "donts": [
+      "Don't soften blackout's 0.15s linear cut to match the other phases' crossfade — the abruptness is what tells the user something broke, not progressed.",
+      "Don't use the error trio ({colors.error} / {colors.error-bright} / {colors.error-text}) for anything outside the blackout phase; it is a whole-stage failure signal, not a general-purpose red.",
+      "Don't add a fourth band-label hue beyond the cobalt / rose-ink / ember-ink triad — each is tied 1:1 to one of the three fixed breakdown sections (Core idea / Terms explained / How to implement it).",
+      "Don't apply a drop shadow to the backdrop, the wordmark, or any atmosphere-level element — depth there comes from the gradient's own light, not applied elevation.",
+      "Don't set Allerta Stencil at body-copy scale or above — past label size it stops reading as stage signage and starts reading as a display face doing a job it isn't built for."
+    ]
+  }
+}

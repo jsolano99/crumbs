@@ -1,0 +1,86 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "design-system-font-size",
+        "value": "0.6rem",
+        "createdAt": "2026-08-21T21:07:11.290Z",
+        "reason": "matches the already-shipped .cue mobile label size, reused consistently by the new account pill, not new drift"
+      },
+      {
+        "rule": "design-system-font-size",
+        "value": "1.05rem",
+        "createdAt": "2026-08-21T21:07:11.325Z",
+        "reason": "pre-existing one-off tagline size; documenter/finish-reviewer already accepted single-use sizes below label tier per document.md's own guidance to skip one-off values"
+      },
+      {
+        "rule": "design-system-font-size",
+        "value": "0.95rem",
+        "createdAt": "2026-08-21T21:07:11.357Z",
+        "reason": "pre-existing one-off primary-button label size; same rationale as 1.05rem"
+      },
+      {
+        "rule": "design-system-font-size",
+        "value": "0.92rem",
+        "createdAt": "2026-08-21T21:07:11.389Z",
+        "reason": "pre-existing one-off error-card copy size; same rationale as 1.05rem"
+      },
+      {
+        "rule": "design-system-font-size",
+        "value": "0.85rem",
+        "createdAt": "2026-08-21T21:07:11.421Z",
+        "reason": "pre-existing one-off ghost-button label size; same rationale as 1.05rem"
+      },
+      {
+        "rule": "design-system-color",
+        "value": "#dce6f2",
+        "createdAt": "2026-08-21T21:07:31.087Z",
+        "reason": "pre-existing one-off gradient interpolation stop in the day-phase backdrop, not a flat UI color; documented endpoints (day, paper) already in DESIGN.md"
+      },
+      {
+        "rule": "design-system-color",
+        "value": "#f3e3d8",
+        "createdAt": "2026-08-21T21:07:31.127Z",
+        "reason": "pre-existing one-off gradient interpolation stop in the day-phase backdrop; same rationale as #dce6f2"
+      },
+      {
+        "rule": "design-system-color",
+        "value": "#1a0d0d",
+        "createdAt": "2026-08-21T21:07:31.159Z",
+        "reason": "pre-existing one-off gradient interpolation stop in the blackout backdrop, between documented night-deep and error tones"
+      },
+      {
+        "rule": "design-system-font-size",
+        "value": "1.35rem",
+        "createdAt": "2026-08-21T21:09:57.127Z",
+        "reason": "new, intentional modal-title size: the system's Display tier (3-5.5rem) is far too large for a modal heading and Body (1rem) too small to read as a title; this is a legitimate new weight class the auth modal needs, not drift"
+      },
+      {
+        "rule": "design-system-font-size",
+        "value": "1.1rem",
+        "createdAt": "2026-08-21T21:09:57.160Z",
+        "reason": "modal close-button glyph size, a functional icon-sized × character, not body/label text"
+      },
+      {
+        "rule": "design-system-font-size",
+        "value": "0.8rem",
+        "createdAt": "2026-08-21T21:09:57.192Z",
+        "reason": "modal form-label one-off size, same category as the already-accepted small UI-copy sizes (0.85/0.92rem)"
+      },
+      {
+        "rule": "design-system-font-size",
+        "value": "1.3rem",
+        "createdAt": "2026-08-22T01:49:18.862Z",
+        "reason": "deck nav chevron glyph size, same category as the already-accepted 1.1rem modal-close glyph — a functional icon character, not body/label text"
+      },
+      {
+        "rule": "design-system-radius",
+        "value": "2px",
+        "createdAt": "2026-08-23T17:29:53.423Z",
+        "reason": "focus-outline corner rounding on an inline text link, not a card/button shape decision"
+      }
+    ]
+  }
+}
