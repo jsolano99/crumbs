@@ -57,6 +57,65 @@ export function splitParagraphs(body: string): string[] {
     .filter(Boolean);
 }
 
+const LIST_ITEM = /^(?:[-•*]|\d+[.)])\s+/;
+
+/** If every non-empty line is a bullet or numbered item, return the items; otherwise null. */
+export function parseListItems(body: string): string[] | null {
+  const lines = body
+    .split("\n")
+    .map((line) => line.trim())
+    .filter(Boolean);
+  if (lines.length === 0 || !lines.every((line) => LIST_ITEM.test(line))) return null;
+  return lines.map((line) => line.replace(LIST_ITEM, ""));
+}
+
+function bulletsFromBody(body: string): string[] {
+  const items = parseListItems(body);
+  if (items) return items;
+  return splitParagraphs(body).flatMap((paragraph) =>
+    paragraph
+      .split("\n")
+      .map((line) => line.replace(LIST_ITEM, "").trim())
+      .filter(Boolean)
+  );
+}
+
+function formatShareBlock(header: string, items: string[]): string {
+  return [header, "", ...items.map((item) => `- ${item}`)].join("\n");
+}
+
+/**
+ * Plaintext for mailto / native share: each card title as a header,
+ * with the card's points as bullets underneath.
+ */
+export function formatBreakdownShare(sections: Breakdown): string {
+  const blocks: string[] = [];
+
+  if (sections.core) {
+    blocks.push(formatShareBlock("Core idea", bulletsFromBody(sections.core)));
+  }
+
+  if (sections.terms) {
+    const terms = parseTerms(
+      sections.terms
+        .split("\n")
+        .map((line) => line.replace(LIST_ITEM, "").trim())
+        .filter(Boolean)
+        .join("\n")
+    );
+    const items = terms.length
+      ? terms.map((entry) => `${entry.term} — ${entry.definition}`)
+      : bulletsFromBody(sections.terms);
+    blocks.push(formatShareBlock("Terms explained", items));
+  }
+
+  if (sections.steps) {
+    blocks.push(formatShareBlock("How to implement it", bulletsFromBody(sections.steps)));
+  }
+
+  return blocks.join("\n\n");
+}
+
 export type TermEntry = {
   term: string;
   definition: string;

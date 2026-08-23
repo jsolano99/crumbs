@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import styles from "./page.module.css";
 import {
   extractError,
+  formatBreakdownShare,
   learnMoreUrl,
   parseBreakdown,
   parseTerms,
@@ -143,6 +144,35 @@ export default function Home() {
     setRaw("");
     setError(null);
     setTweetText("");
+  }
+
+  async function handleEmailMyself() {
+    const body = formatBreakdownShare(sections);
+    if (!body) return;
+
+    const prefersNativeShare =
+      typeof navigator.share === "function" && window.matchMedia("(pointer: coarse)").matches;
+
+    if (prefersNativeShare) {
+      try {
+        await navigator.share({ title: "Crumbs", text: body });
+        return;
+      } catch (err) {
+        if (err instanceof DOMException && err.name === "AbortError") return;
+      }
+    }
+
+    const to = userEmail ?? "";
+    const subject = "Crumbs";
+    const withBody = `mailto:${to}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+
+    if (withBody.length > 2000) {
+      await navigator.clipboard.writeText(body).catch(() => undefined);
+      window.location.href = `mailto:${to}?subject=${encodeURIComponent(subject)}`;
+      return;
+    }
+
+    window.location.href = withBody;
   }
 
   async function handleAuthSubmit(event: React.FormEvent) {
@@ -300,9 +330,26 @@ export default function Home() {
             <button type="button" className={styles.reset} onClick={handleReset}>
               Paste another tweet
             </button>
+            {hasBreakdown && (
+              <button type="button" className={styles.share} onClick={() => void handleEmailMyself()}>
+                Email myself
+              </button>
+            )}
           </div>
         )}
       </div>
+
+      <p className={styles.credit}>
+        Made by{" "}
+        <a
+          className={styles.creditLink}
+          href="https://jacobsolano.co"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Jacob Solano
+        </a>
+      </p>
 
       {showAuthGate && (
         <div className={styles.modalOverlay} role="presentation" onClick={() => setShowAuthGate(false)}>
