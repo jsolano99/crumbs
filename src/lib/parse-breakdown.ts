@@ -1,4 +1,5 @@
 export type Breakdown = {
+  title?: string;
   core?: string;
   terms?: string;
   steps?: string;
@@ -10,8 +11,35 @@ function stripTrailingPartialMarker(value: string): string {
   return value.replace(/§{1,2}[A-Z]{0,6}$/, "").trimEnd();
 }
 
+/** Drops the model's thinking pass so it can never leak into a visible card. */
+function dropAskSection(text: string): string {
+  const start = text.indexOf("§§ASK");
+  if (start < 0) return text;
+
+  const rest = text.slice(start + "§§ASK".length);
+  const nextOffsets = MARKERS.map((name) => rest.indexOf(name)).filter((index) => index >= 0);
+  const after = nextOffsets.length > 0 ? rest.slice(Math.min(...nextOffsets)) : "";
+  return `${text.slice(0, start)}${after}`.trim();
+}
+
+function parseAskTitle(text: string): string | undefined {
+  const start = text.indexOf("§§ASK");
+  if (start < 0) return undefined;
+
+  const rest = text.slice(start + "§§ASK".length);
+  const nextOffsets = ["§§CORE", "§§TERMS", "§§STEPS", "§§END"]
+    .map((name) => rest.indexOf(name))
+    .filter((index) => index >= 0);
+  const askBody = nextOffsets.length > 0 ? rest.slice(0, Math.min(...nextOffsets)) : rest;
+  const match = askBody.match(/^Title:\s*(.+)$/m);
+  const title = match?.[1]?.replace(/^["']|["']$/g, "").trim();
+  return title || undefined;
+}
+
 /**
- * Parses the model's §§CORE / §§TERMS / §§STEPS / §§END protocol.
+ * Parses the model's §§ASK / §§CORE / §§TERMS / §§STEPS / §§END protocol.
+ * §§ASK is a required thinking step the model must write first; it is not
+ * a card, so this parser ignores it and only surfaces CORE / TERMS / STEPS.
  * Safe to call on a partial, still-streaming buffer.
  *
  * Pass `complete: true` once the response has fully finished (not mid-stream)
@@ -22,13 +50,16 @@ function stripTrailingPartialMarker(value: string): string {
  */
 export function parseBreakdown(raw: string, options?: { complete?: boolean }): Breakdown {
   const endIndex = raw.indexOf("§§END");
-  const text = endIndex >= 0 ? raw.slice(0, endIndex) : raw;
+  const sliced = endIndex >= 0 ? raw.slice(0, endIndex) : raw;
+  const title = parseAskTitle(sliced);
+  const text = dropAskSection(sliced);
 
   const positions = MARKERS.map((name) => ({ name, index: text.indexOf(name) }))
     .filter((entry) => entry.index >= 0)
     .sort((a, b) => a.index - b.index);
 
   const sections: Breakdown = {};
+  if (title) sections.title = title;
 
   positions.forEach((position, i) => {
     const start = position.index + position.name.length;
@@ -84,15 +115,13 @@ function formatShareBlock(header: string, items: string[]): string {
   return [header, "", ...items.map((item) => `- ${item}`)].join("\n");
 }
 
-/**
- * Plaintext for mailto / native share: each card title as a header,
- * with the card's points as bullets underneath.
- */
-export function formatBreakdownShare(sections: Breakdown): string {
-  const blocks: string[] = [];
+const SHARE_FOOTER = "This email this breakdown was generated and sent by crumbs.";
+
+function shareSections(sections: Breakdown): { header: string; items: string[] }[] {
+  const blocks: { header: string; items: string[] }[] = [];
 
   if (sections.core) {
-    blocks.push(formatShareBlock("Core idea", bulletsFromBody(sections.core)));
+    blocks.push({ header: "Core idea", items: bulletsFromBody(sections.core) });
   }
 
   if (sections.terms) {
@@ -106,14 +135,50 @@ export function formatBreakdownShare(sections: Breakdown): string {
     const items = terms.length
       ? terms.map((entry) => `${entry.term} — ${entry.definition}`)
       : bulletsFromBody(sections.terms);
-    blocks.push(formatShareBlock("Terms explained", items));
+    const usable = items.filter((item) => !/^(none|n\/a|nothing\.?)$/i.test(item.trim()));
+    if (usable.length > 0) blocks.push({ header: "Terms explained", items: usable });
   }
 
   if (sections.steps) {
-    blocks.push(formatShareBlock("How to implement it", bulletsFromBody(sections.steps)));
+    blocks.push({ header: "How to implement it", items: bulletsFromBody(sections.steps) });
   }
 
-  return blocks.join("\n\n");
+  return blocks;
+}
+
+export function formatEmailSubject(title?: string): string {
+  const topic = title?.trim() || "this lesson";
+  return `re: ${topic} by crumbs`;
+}
+
+/**
+ * Plaintext for mailto / native share: each card title as a header,
+ * with the card's points as bullets underneath, then a Crumbs footer.
+ */
+export function formatBreakdownShare(sections: Breakdown): string {
+  const body = shareSections(sections)
+    .map(({ header, items }) => formatShareBlock(header, items))
+    .join("\n\n");
+  return body ? `${body}\n\n${SHARE_FOOTER}` : SHARE_FOOTER;
+}
+
+function escapeHtml(value: string): string {
+  return value
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+}
+
+/** HTML email body so card headers render bold in Mail. */
+export function formatBreakdownShareHtml(sections: Breakdown): string {
+  const sectionsHtml = shareSections(sections)
+    .map(({ header, items }) => {
+      const list = items.map((item) => `<li>${escapeHtml(item)}</li>`).join("");
+      return `<p><strong>${escapeHtml(header)}</strong></p><ul>${list}</ul>`;
+    })
+    .join("");
+  return `<div>${sectionsHtml}<p>${escapeHtml(SHARE_FOOTER)}</p></div>`;
 }
 
 export type TermEntry = {
