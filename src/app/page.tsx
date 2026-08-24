@@ -14,6 +14,19 @@ import {
 } from "@/lib/parse-breakdown";
 import { SwipeDeck, type DeckCard } from "./SwipeDeck";
 
+function encodeMailto(value: string): string {
+  return encodeURIComponent(value.replace(/\r\n/g, "\n").replace(/\n/g, "\r\n"));
+}
+
+function openMailto(to: string, subject: string, body: string) {
+  const href = `mailto:${to}?subject=${encodeMailto(subject)}&body=${encodeMailto(body)}`;
+  const link = document.createElement("a");
+  link.href = href;
+  document.body.append(link);
+  link.click();
+  link.remove();
+}
+
 type Phase = "night" | "first-light" | "dawn" | "day" | "blackout";
 type AuthMode = "signup" | "login";
 
@@ -166,13 +179,11 @@ export default function Home() {
     }
 
     const to = userEmail ?? "";
-    const mailto = `mailto:${to}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-    if (mailto.length > 2000) {
+    const href = `mailto:${to}?subject=${encodeMailto(subject)}&body=${encodeMailto(body)}`;
+    if (href.length > 7000) {
       await navigator.clipboard.writeText(body).catch(() => undefined);
-      window.location.href = `mailto:${to}?subject=${encodeURIComponent(subject)}`;
-      return;
     }
-    window.location.href = mailto;
+    openMailto(to, subject, body);
   }
 
   async function handleAuthSubmit(event: React.FormEvent) {
