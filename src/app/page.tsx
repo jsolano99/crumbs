@@ -18,13 +18,56 @@ function encodeMailto(value: string): string {
   return encodeURIComponent(value.replace(/\r\n/g, "\n").replace(/\n/g, "\r\n"));
 }
 
-function openMailto(to: string, subject: string, body: string) {
+function utf8ToBase64(value: string): string {
+  const bytes = new TextEncoder().encode(value);
+  let binary = "";
+  bytes.forEach((byte) => {
+    binary += String.fromCharCode(byte);
+  });
+  return btoa(binary);
+}
+
+function buildMailDraft({ to, subject, body }: { to: string; subject: string; body: string }): string {
+  const safeTo = to.replace(/[\r\n]+/g, "");
+  const safeSubject = subject.replace(/[\r\n]+/g, " ").trim();
+  const wrappedBody = utf8ToBase64(body).replace(/(.{76})/g, "$1\r\n");
+  return [
+    safeTo ? `To: ${safeTo}` : "To:",
+    `Subject: =?UTF-8?B?${utf8ToBase64(safeSubject)}?=`,
+    "X-Unsent: 1",
+    "MIME-Version: 1.0",
+    "Content-Type: text/plain; charset=UTF-8",
+    "Content-Transfer-Encoding: base64",
+    "",
+    wrappedBody,
+  ].join("\r\n");
+}
+
+/** Mail/Chrome drop mailto bodies once the URL gets long. Open a draft file instead. */
+function openMailDraft({ to, subject, body }: { to: string; subject: string; body: string }) {
   const href = `mailto:${to}?subject=${encodeMailto(subject)}&body=${encodeMailto(body)}`;
-  const link = document.createElement("a");
-  link.href = href;
-  document.body.append(link);
-  link.click();
-  link.remove();
+  if (href.length <= 1500) {
+    const link = document.createElement("a");
+    link.href = href;
+    document.body.append(link);
+    link.click();
+    link.remove();
+    return;
+  }
+
+  const blob = new Blob([buildMailDraft({ to, subject, body })], { type: "message/rfc822" });
+  const url = URL.createObjectURL(blob);
+  const opened = window.open(url, "_blank", "noopener");
+  if (!opened) {
+    const link = document.createElement("a");
+    link.href = url;
+    link.target = "_blank";
+    link.rel = "noopener";
+    document.body.append(link);
+    link.click();
+    link.remove();
+  }
+  window.setTimeout(() => URL.revokeObjectURL(url), 60_000);
 }
 
 type Phase = "night" | "first-light" | "dawn" | "day" | "blackout";
@@ -179,11 +222,7 @@ export default function Home() {
     }
 
     const to = userEmail ?? "";
-    const href = `mailto:${to}?subject=${encodeMailto(subject)}&body=${encodeMailto(body)}`;
-    if (href.length > 7000) {
-      await navigator.clipboard.writeText(body).catch(() => undefined);
-    }
-    openMailto(to, subject, body);
+    openMailDraft({ to, subject, body });
   }
 
   async function handleAuthSubmit(event: React.FormEvent) {
@@ -259,7 +298,7 @@ export default function Home() {
 
       <div className={styles.column}>
         <h1 className={styles.wordmark}>Crumbs</h1>
-        <p className={styles.tagline}>Paste a tweet. Get a bite-sized lesson in what it means and how to do it.</p>
+        <p className={styles.tagline}>Bite-sized breakdowns of X’s best ideas, made to learn and share.</p>
 
         <form className={styles.form} onSubmit={handleSubmit}>
           <label htmlFor="tweet" className="sr-only">
